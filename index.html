@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsReplayed - Track. Review. Discuss.</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* --- 1. Base Setup & Theme --- */
+        :root {
+            --bg-color: #14181C;       /* Dark blue-ish background (like Letterboxd) */
+            --card-color: #2C3440;      /* Card color */
+            --text-color: #9ab;         /* Main text color */
+            --text-light: #e0e0e0;      /* Bright text (headings) */
+            --accent-color: #E9A00D;  /* Accent color (sporty gold/orange) */
+            --border-color: #445566;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        h1, h2 {
+            color: var(--text-light);
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- 2. Header --- */
+        .site-header {
+            background-color: var(--card-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 5%;
+        }
+
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-light);
+            letter-spacing: -1px;
+        }
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+        }
+        .main-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .user-actions a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        .user-actions .btn-signup {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 700;
+        }
+        .user-actions .btn-signup:hover {
+            background-color: #ffb400;
+            text-decoration: none;
+        }
+        
+        /* --- 3. Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(20, 24, 28, 0.8), rgba(20, 24, 28, 0.8)), url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            border: none;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero .cta-button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+        .hero .cta-button:hover {
+            background-color: #ffb400;
+            text-decoration: none;
+        }
+
+        /* --- 4. Poster Carousel (Trending) --- */
+        .carousel-section {
+            position: relative;
+        }
+        
+        .carousel {
+            display: flex;
+            overflow-x: scroll; /* Enable horizontal scrolling */
+            padding: 10px 0;
+            /* Hide standard scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE/Edge */
+        }
+        .carousel::-webkit-scrollbar { /* Chrome, Safari */
+            display: none;
+        }
+
+        .game-poster {
+            flex-shrink: 0; /* Prevent shrinking */
+            width: 180px; /* Poster width */
+            margin-right: 15px;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .game-poster:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-color);
+        }
+
+        .poster-image {
+            width: 100%;
+            height: 270px; /* Height (like a movie poster) */
+            background-color: #556677; /* Image placeholder */
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            /* Placeholder icon */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--bg-color);
+        }
+        
+        .poster-info {
+            padding: 10px;
+        }
+        .poster-info h3 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0 0 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .poster-info .rating {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        /* JS Scroll Buttons */
+        .carousel-btn {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+            background-color: rgba(44, 52, 64, 0.9);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .carousel-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+        .prev-btn { left: -20px; }
+        .next-btn { right: -20px; }
+
+
+        /* --- 5. Popular Reviews --- */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .review-card {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .review-header img { /* Avatar */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #556677;
+            margin-right: 10px;
+        }
+        .review-meta .username {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        .review-meta .rating {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .review-game-poster {
+            width: 70px; /* Small poster */
+            height: 105px;
+            background-color: #556677;
+            border-radius: 3px;
+            float: left;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+        
+        .review-body {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .review-body p {
+            margin-top: 0;
+        }
+
+        .review-footer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .review-footer i {
+            margin-right: 5px;
+        }
+        .review-footer a {
+            margin-right: 15px;
+            color: var(--text-color);
+        }
+        .review-footer a:hover {
+            color: var(--text-light);
+        }
+        
+        /* --- 6. Footer --- */
+        .site-footer {
+            background-color: #0E1012;
+            color: var(--text-color);
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="logo">Sports<span>Replayed</span></a>
+            
+            <nav class="main-nav">
+                <a href="#">GAMES</a>
+                <a href="#">LISTS</a>
+                <a href="#">MEMBERS</a>
+                <a href="#">DIARY</a>
+            </nav>
+
+            <input type="text" placeholder="Search games, players, lists..." style="width: 250px; padding: 8px; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-light); border-radius: 5px;">
+
+            <div class="user-actions">
+                <a href="/login.html">SIGN IN</a>
+                <a href="/register.html" class="btn-signup">CREATE ACCOUNT</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <h1>Track the sports you’ve watched.</h1>
+            <p>Save the games you want to see. Tell your friends what’s legendary.</p>
+            <a href="#" class="cta-button">Get Started — It’s Free</a>
+        </section>
+
+        <div class="container">
+
+            <section class="carousel-section" id="trending-section">
+                <h2>Trending This Week</h2>
+                
+                <button class="carousel-btn prev-btn" data-target="trending-carousel"><i class="fas fa-chevron-left"></i></button>
+                
+                <div class="carousel" id="trending-carousel">
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-futbol"></i></div>
+                        <div class="poster-info">
+                            <h3>UCL Final 2024</h3>
+                            <span class="rating">★★★★☆ 4.2</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-basketball"></i></div>
+                        <div class="poster-info">
+                            <h3>NBA Finals 2024: Game 7</h3>
+                            <span class="rating">★★★★★ 4.8</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-person-running"></i></div>
+                        <div class="poster-info">
+                            <h3>1998 NBA Finals: Game 6</h3>
+                            <span class="rating">★★★★★ 4.9</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-hand-fist"></i></div>
+                        <div class="poster-info">
+                            <h3>UFC 300</h3>
+                            <span class="rating">★★★★☆ 4.4</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-flag-checkered"></i></div>
+                        <div class="poster-info">
+                            <h3>Monaco GP 2024</h3>
+                            <span class="rating">★★★☆☆ 3.1</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-futbol"></i></div>
+                        <div class="poster-info">
+                            <h3>World Cup 2022 Final</h3>
+                            <span class="rating">★★★★★ 4.9</span>
+                        </div>
+                    </div>
+                    <div class="game-poster">
+                        <div class="poster-image"><i class="fa-solid fa-basketball"></i></div>
+                        <div class="poster-info">
+                            <h3>Kobe's Last Game</h3>
+                            <span class="rating">★★★★☆ 4.6</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-btn next-btn" data-target="trending-carousel"><i class="fas fa-chevron-right"></i></button>
+            </section>
+
+
+            <section class="popular-reviews">
+                <h2>Popular Reviews</h2>
+                
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img alt="avatar"> <div class="review-meta">
+                                Review by <a href="#" class="username">@sportsfan99</a>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <div class="review-game-poster"></div> <p>This wasn't just a match, it was poetry. I was standing for the last 40 seconds. Michael once again proved why he's the greatest. Have rewatched 5 times...</p>
+                        </div>
+                        <div class="review-footer">
+                            <a href="#"><i class="fas fa-heart"></i> 1.2k</a>
+                            <a href="#"><i class="fas fa-comment"></i> 88</a>
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img alt="avatar">
+                            <div class="review-meta">
+                                Review by <a href="#" class="username">@MessiGOAT</a>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <div class="review-game-poster"></div>
+                            <p>I cried. My whole life flashed before my eyes. Finally! Thank you, Leo. The best World Cup Final in history, no debate.</p>
+                        </div>
+                        <div class="review-footer">
+                            <a href="#"><i class="fas fa-heart"></i> 5.4k</a>
+                            <a href="#"><i class="fas fa-comment"></i> 203</a>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img alt="avatar">
+                            <div class="review-meta">
+                                Review by <a href="#" class="username">@FormulaFun</a>
+                                <div class="rating">★★☆☆☆</div>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <div class="review-game-poster"></div>
+                            <p>Absolutely the worst Monaco race in the last 10 years. Not a single overtake. Just a 2-hour train. Could have just watched qualifying and turned it off.</p>
+                        </div>
+                        <div class="review-footer">
+                            <a href="#"><i class="fas fa-heart"></i> 450</a>
+                            <a href="#"><i class="fas fa-comment"></i> 55</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div> </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <a href="#">About</a> &middot;
+            <a href="#">Terms of Use</a> &middot;
+            <a href="#">Privacy Policy</a> &middot;
+            <a href="#">Contact</a>
+            <p style="margin-top: 15px; font-size: 0.9rem;">&copy; 2024 SportsReplayed. Concept inspired by communty on cycling twitter.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Setup all carousels on the page
+            setupCarousel('trending-section');
+            // You would add this for other carousels, e.g.:
+            // setupCarousel('popular-lists-section'); 
+        });
+
+        /**
+         * Sets up the 'Next' and 'Prev' buttons for the specified carousel section.
+         * @param {string} sectionId - The ID of the carousel's parent section element.
+         */
+        function setupCarousel(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (!section) return; // Exit if the section isn't found
+
+            const prevBtn = section.querySelector('.prev-btn');
+            const nextBtn = section.querySelector('.next-btn');
+            const carousel = document.getElementById(prevBtn.dataset.target);
+
+            if (!prevBtn || !nextBtn || !carousel) {
+                console.warn(`Carousel setup failed for ${sectionId}: elements not found.`);
+                return;
+            }
+
+            // Scroll amount (you can adjust this)
+            const scrollAmount = 300; 
+
+            // "Next" button
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            // "Prev" button
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            // (Optional) You could add logic here to hide/show buttons
+            // if the carousel is at the beginning or end.
+            // For now, we'll keep the basic scroll.
+        }
+
+    </script>
+
+</body>
+</html>
